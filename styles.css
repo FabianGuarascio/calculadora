@@ -1,0 +1,53 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to right, rgb(0, 217, 255), rgb(7, 243, 7));
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 80px);
+  grid-template-rows: minmax(120px, auto) repeat(5, 70px);
+  justify-content: center;
+  align-content: center;
+  min-height: 100vh;
+}
+
+.span-two {
+  grid-column: span 2;
+}
+
+.output {
+  grid-column: 1/-1;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  align-items: flex-end;
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+  border-radius: 8px;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.grid-container > button {
+  background-color: rgba(255, 255, 255, 0.6);
+  font-size: 2rem;
+  outline: none;
+  /* border:solid white 1px; */
+  border-radius: 108px;
+  box-shadow: black 2px 2px;
+  margin: 2px;
+}
+
+.grid-container > button:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+}
+
+.current-operand {
+  font-size: 2rem;
+}
+
+.previous-operand {
+}
