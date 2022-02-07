@@ -3,6 +3,7 @@ class Calculator {
         this.previousOperandTextElement=previousOperandTextElement;
         this.currentOperandTextElement=currentOperandTextElement;
         this.clear()
+        this.sound=true
     }
     clear(){
         this.previousOperand="";
@@ -13,21 +14,22 @@ class Calculator {
     equalOperation(){
         this.postEqual=true;
     }
-
+    soundOn(){
+        if (this.sound){
+            keySound.play()
+        }
+    }
     appendNumber(number){
         if(this.postEqual){
             this.currentOperand=""
             this.postEqual=false
         }
         if(number === "." && this.currentOperand.includes(".")) return;
-        keySound.play()
-        
+        this.soundOn()
         this.currentOperand+= number;
-
     }
     delete(){
         this.currentOperand= this.currentOperand.toString().slice(0,-1);
-
     }
     chooseOperation(operation){
         if(this.currentOperand === "")return
@@ -35,14 +37,11 @@ class Calculator {
             this.compute()
         }
         keySound.play()
-
         this.operation=operation;
         this.previousOperand=this.currentOperand;
         this.currentOperand=""
-
     }
     compute(){
-
         let computation;
         const prev = parseFloat(this.previousOperand);
         const current = parseFloat(this.currentOperand);
@@ -64,25 +63,39 @@ class Calculator {
             default:
                 return;
         }
-
         this.previousOperand="";
         this.currentOperand=computation;
         this.operation= undefined;
+    }
+    getDispalyNumber(number){
+        let stringNumber= number.toString();
+        let integerDigits = parseFloat(stringNumber.split(".")[0]);
+        let decimalDigits= stringNumber.split(".")[1];
+        let integerDisplay;
+        if (isNaN(integerDigits)){
+            integerDisplay=""
+        }else{
+            integerDisplay=integerDigits.toLocaleString('en',{maximumFractionDigits : 0})
+        }
+        if(decimalDigits != null){
+            return `${integerDisplay}.${decimalDigits}`
+        }else{
+            return integerDisplay
+        }
 
     }
     updateDisplay(){
-        this.currentOperandTextElement.innerText= this.currentOperand;
+        this.currentOperandTextElement.innerText= this.getDispalyNumber(this.currentOperand);
         if(this.operation != null){
-            
-            this.previousOperandTextElement.innerText= this.previousOperand +" " + this.operation;
+            this.previousOperandTextElement.innerText= this.getDispalyNumber(this.previousOperand) +" " + this.operation;
         }else {
             this.previousOperandTextElement.innerText= "";
-            
         }
     }
 }
 
 const d= document;
+const $sound= d.getElementById('sound');
 const numberButtons= d.querySelectorAll('[data-number]') 
 const operationButtons= d.querySelectorAll('[data-operation]')
 const equalsButton= d.querySelector('[data-equals]')
@@ -93,13 +106,13 @@ const allClear= d.querySelector('[data-all-clear]')
 const keys =['0','1','2','3','4','5','6','7','8','9','.']
 const operationKeys=["*","+","-","/"]
 
-var keySound;
 
+var keySound;
 
 function preload(){
     keySound = loadSound("singleKey.wav")
 }
-
+// setup is necesary for the sound effect of p5.js library to work.Even if it is empty.
 function setup(){
     
 }
@@ -168,4 +181,9 @@ d.addEventListener('keydown',function(event){
         calculator.clear()
         calculator.updateDisplay()
     }
+})
+
+$sound.addEventListener('click',()=>{
+    calculator.sound= !(calculator.sound);
+    console.log(calculator.sound);
 })
