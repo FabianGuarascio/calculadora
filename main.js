@@ -14,9 +14,9 @@ class Calculator {
     equalOperation(){
         this.postEqual=true;
     }
-    soundOn(){
+    soundOn(a){
         if (this.sound){
-            keySound.play()
+            a.play()
         }
     }
     appendNumber(number){
@@ -25,7 +25,7 @@ class Calculator {
             this.postEqual=false
         }
         if(number === "." && this.currentOperand.includes(".")) return;
-        this.soundOn()
+        this.soundOn(keySound)
         this.currentOperand+= number;
     }
     delete(){
@@ -36,7 +36,7 @@ class Calculator {
         if(this.previousOperand !== ""){
             this.compute()
         }
-        keySound.play()
+        this.soundOn(keySound)
         this.operation=operation;
         this.previousOperand=this.currentOperand;
         this.currentOperand=""
@@ -67,27 +67,28 @@ class Calculator {
         this.currentOperand=computation;
         this.operation= undefined;
     }
-    getDispalyNumber(number){
+    getDisplayNumber(number){
         let stringNumber= number.toString();
-        let integerDigits = parseFloat(stringNumber.split(".")[0]);
+        let integerDigits= parseFloat(stringNumber.split(".")[0]);
         let decimalDigits= stringNumber.split(".")[1];
         let integerDisplay;
-        if (isNaN(integerDigits)){
+        if(isNaN(integerDigits)){
             integerDisplay=""
         }else{
-            integerDisplay=integerDigits.toLocaleString('en',{maximumFractionDigits : 0})
+            integerDisplay=integerDigits.toLocaleString("en",{maximumFractionDigits:0})
         }
-        if(decimalDigits != null){
+        if (decimalDigits != null){
             return `${integerDisplay}.${decimalDigits}`
         }else{
             return integerDisplay
         }
-
     }
+
+    
     updateDisplay(){
-        this.currentOperandTextElement.innerText= this.getDispalyNumber(this.currentOperand);
+        this.currentOperandTextElement.innerText= this.getDisplayNumber(this.currentOperand);
         if(this.operation != null){
-            this.previousOperandTextElement.innerText= this.getDispalyNumber(this.previousOperand) +" " + this.operation;
+            this.previousOperandTextElement.innerText= this.getDisplayNumber(this.previousOperand) +" " + this.operation;
         }else {
             this.previousOperandTextElement.innerText= "";
         }
@@ -105,6 +106,10 @@ const currentOperandTextElement= d.querySelector('[data-current-operand]')
 const allClear= d.querySelector('[data-all-clear]')
 const keys =['0','1','2','3','4','5','6','7','8','9','.']
 const operationKeys=["*","+","-","/"]
+let $i = d.querySelector("i")
+let icon =d.querySelector(".fa-volume-up")
+console.log($i);
+console.log(icon);
 
 
 var keySound;
@@ -184,6 +189,11 @@ d.addEventListener('keydown',function(event){
 })
 
 $sound.addEventListener('click',()=>{
+    if(icon.classList.contains("fa-volume-up")){
+        icon.classList.replace("fa-volume-up","fa-volume-mute")
+        }else{
+            icon.classList.replace("fa-volume-mute","fa-volume-up")
+        }
     calculator.sound= !(calculator.sound);
     console.log(calculator.sound);
 })

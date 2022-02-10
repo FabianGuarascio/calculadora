@@ -7,6 +7,14 @@ body {
 #sound{
   cursor: pointer;
 }
+
+.icon{
+  font-size: 100px;
+  position: absolute;
+  margin-left: 20px;
+  
+}
+
 .grid-container {
   display: grid;
   grid-template-columns: repeat(4, 80px);
