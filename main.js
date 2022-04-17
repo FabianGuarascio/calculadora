@@ -24,7 +24,7 @@ class Calculator {
             this.currentOperand=""
             this.postEqual=false
         }
-        if(number === "." && this.currentOperand.includes(".")) return;
+        if((number === "." && this.currentOperand.includes("."))||this.currentOperand.length>=16 ) return;
         this.soundOn(keySound)
         this.currentOperand+= number;
     }
@@ -108,8 +108,7 @@ const keys =['0','1','2','3','4','5','6','7','8','9','.']
 const operationKeys=["*","+","-","/"]
 let $i = d.querySelector("i")
 let icon =d.querySelector(".fa-volume-up")
-console.log($i);
-console.log(icon);
+let $body= d.querySelector('body')
 
 
 var keySound;
@@ -197,3 +196,33 @@ $sound.addEventListener('click',()=>{
     calculator.sound= !(calculator.sound);
     console.log(calculator.sound);
 })
+
+function cambiarColor(){
+    var i = 0;
+    console.log(i)
+    btnChangeColor.addEventListener('click', ()=>{
+    
+        if (i==0){
+            $body.style.setProperty("--gradient","var(--rojin)")
+            i++
+            console.log(i + " rojin")
+        } else if (i==1){
+            $body.style.setProperty("--gradient","var(--verdin)")
+            i++
+            console.log(i + " verdin")
+        }else if(i==2){
+            $body.style.setProperty("--gradient","var(--amarillin)")
+            i++
+            console.log(i + " amarillin")
+        } else{
+            $body.style.setProperty("--gradient","var(--azulin)")
+            i=0
+            console.log(i + " azulin")
+        }
+        
+    })
+}
+cambiarColor()
+
+
+
